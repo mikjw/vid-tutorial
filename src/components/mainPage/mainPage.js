@@ -42,7 +42,11 @@ export default class MainPage extends Component {
   }
 
   handleAddTag() {
-    return;
+    const tag = this.state.searchBarValue;
+    this.setState({
+      appliedTags: [...this.state.appliedTags, tag],
+      searchBarValue: ""
+    })
   }
 
   onChangeSearchBarValue(e) {
