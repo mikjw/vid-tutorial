@@ -7,13 +7,15 @@ export default class MainPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tutorialsList: []
+      tutorialsList: [],
+      searchBarValue: "",
+      appliedTags: []
     }
+    this.onChangeSearchBarValue = this.onChangeSearchBarValue.bind(this);
   }
 
   async componentDidMount() {
     const response = await axios.get("https://lingumi-take-home-test-server.herokuapp.com/videoTutorials");
-    console.log(response.data);
     this.setState({
       tutorialsList: response.data,
     })
@@ -27,21 +29,47 @@ export default class MainPage extends Component {
     })
   }
 
+  listAppliedTags() {
+    return this.state.appliedTags.map(tag => {
+      return <div className="tag">
+        {tag}
+      </div>
+    })
+  }
+
+  handleSearch() {
+    return;
+  }
+
+  handleAddTag() {
+    return;
+  }
+
+  onChangeSearchBarValue(e) {
+    this.setState({searchBarValue: e.target.value});
+  }
+
   render() {
     return (
       <div>
-      <div className="main-page-title">
-        VID-TUTORIAL
-      </div>
-      <div className="tutorialsList">
-        {this.listTutorials()}
-      </div>
+        <div className="main-page-title">
+          VID-TUTORIAL
+        </div>
+        <div className='search-container'>
+          <input className='search-input' type='text' name='value' value={this.state.searchBarValue} onChange={this.onChangeSearchBarValue} />
+          <br/>
+          <div>
+            {this.listAppliedTags()}
+          </div>
+          <div>
+            <button className='search-button' onClick={() => {this.handleSearch(this.state.searchBarValue)}}>Search</button>
+            <button className='add-tag-button' onClick={() => {this.handleAddTag()}}>Add tag</button>
+          </div>
+        </div>
+        <div className="tutorialsList">
+          {this.listTutorials()}
+        </div>
       </div>
     );
   }
 }
-
-
-
-
-
