@@ -120,7 +120,7 @@ export const data = [
   {
       "id": "c34bc091-6725-45e0-90c2-ea0713374157",
       "videoUrl": "https://thisurldoesnotactuallyexist.totallynotreal/c34bc091-6725-45e0-90c2-ea0713374157",
-      "videoTitle": "Learn: Vehicles",
+      "videoTitle": "Review: Vehicles",
       "tags": [
           "Energetic"
       ],
