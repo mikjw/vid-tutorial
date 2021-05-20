@@ -3,6 +3,7 @@ import { Component } from "react";
 import axios from "axios";
 import Tutorial from "../tutorial/tutorial";
 import { getTopRatedTutorialsForTags } from "../../helpers/searchFunctions";
+import { searchForTutorials } from "../../helpers/searchFunctions";
 
 
 export default class MainPage extends Component {
@@ -14,7 +15,8 @@ export default class MainPage extends Component {
       searchBarValue: "",
       appliedTags: [],
       searchString: "",
-      tagsApplied: false
+      tagsApplied: false,
+      searchApplied: false
     }
     this.onChangeSearchBarValue = this.onChangeSearchBarValue.bind(this);
   }
@@ -46,11 +48,28 @@ export default class MainPage extends Component {
   }
 
   handleSearch() {
-    return;
+    let tutorialsForSearchString = searchForTutorials(this.state.initialTutorialsList, this.state.searchBarValue);
+    if (this.state.tagsApplied) {
+      tutorialsForSearchString = getTopRatedTutorialsForTags(tutorialsForSearchString, this.state.appliedTags, 20);
+    }
+    this.setState({
+      currentTutorialsList: tutorialsForSearchString,
+      searchApplied: true,
+      searchString: this.state.searchBarValue,
+      searchBarValue: ""
+    })
   }
 
   handleClearSearch() {
-    return;
+    let tutorialsWithoutSearch = this.state.initialTutorialsList;
+    if(this.state.tagsApplied) {
+      tutorialsWithoutSearch = getTopRatedTutorialsForTags(this.state.initialTutorialsList, this.state.appliedTags, 20);
+    }
+    this.setState({ 
+      searchApplied: false, 
+      searchString: "",
+      currentTutorialsList: tutorialsWithoutSearch
+    }) 
   }
 
   async handleAddTag() {
@@ -63,7 +82,10 @@ export default class MainPage extends Component {
   }
 
   applyTags() {
-    const topRatedTutorialsForTags = getTopRatedTutorialsForTags(this.state.initialTutorialsList, this.state.appliedTags, 20);
+    let list;
+    if(this.state.searchApplied) { list = searchForTutorials(this.state.initialTutorialsList, this.state.searchString) }
+    else { list = this.state.initialTutorialsList };
+    const topRatedTutorialsForTags = getTopRatedTutorialsForTags(list, this.state.appliedTags, 20);
     this.setState({ 
       currentTutorialsList: topRatedTutorialsForTags, 
       tagsApplied: true 
@@ -71,7 +93,14 @@ export default class MainPage extends Component {
   }
 
   handleClearAllTags() {
-    if (this.state.tagsApplied) {
+    if (this.state.searchApplied) {
+      const list = searchForTutorials(this.state.initialTutorialsList, this.state.searchString);
+      this.setState({
+        appliedTags: [],
+        currentTutorialsList: list,
+        tagsApplied: false
+      })
+    } else {
       this.setState({
         appliedTags: [],
         currentTutorialsList: this.state.initialTutorialsList,
@@ -84,6 +113,16 @@ export default class MainPage extends Component {
     this.setState({ searchBarValue: e.target.value });
   }
 
+  createSearchMesage() {
+    let searchMessage = "";
+    const resultsNumber = this.state.currentTutorialsList.length;
+    if (this.state.searchApplied || this.state.tagsApplied) { searchMessage += `Showing top ${resultsNumber} results for` }
+    if (this.state.searchApplied) { searchMessage += ` ${this.state.searchString}`}
+    if (this.state.searchApplied && this.state.tagsApplied) { searchMessage += " with" }
+    if (this.state.tagsApplied) { searchMessage += " tags:" }
+    return searchMessage;
+  }
+
   render() {
     return (
       <div className="main-page-container">
@@ -93,17 +132,21 @@ export default class MainPage extends Component {
         <div className='search-container'>
           <input className='search-input' type='text' name='value' value={this.state.searchBarValue} onChange={this.onChangeSearchBarValue} />
           <br/>
+
           <div>
-            {this.listAppliedTags()}
+            <button className= {'button'} onClick={() => {this.handleSearch(this.state.searchBarValue)}}>Search</button>
+            <button className='button' onClick={() => {this.handleAddTag()}}>Add tag</button>
           </div>
           <div>
-            <button className='search-button' onClick={() => {this.handleSearch(this.state.searchBarValue)}}>Search</button>
-            <button className='add-tag-button' onClick={() => {this.handleAddTag()}}>Add tag</button>
+            <button className='button' onClick={() => {this.handleClearSearch()}}>Clear search</button>
+            <button className='button' onClick={() => {this.handleClearAllTags()}}>Clear all tags</button>
           </div>
-          <div>
-            <button className='clear-search-button' onClick={() => {this.handleClearSearch()}}>Clear search</button>
-            <button className='clear-tags-button' onClick={() => {this.handleClearAllTags()}}>Clear all tags</button>
-          </div>
+        </div>
+        <div>
+          {this.createSearchMesage()}
+        </div>
+        <div>
+          {this.listAppliedTags()}
         </div>
         <div className="currentTutorialsList">
           {this.listTutorials()}
