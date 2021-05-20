@@ -134,11 +134,10 @@ export default class MainPage extends Component {
         <button className="refresh-button" onClick={() => {this.handleRefreshTutorials()}}> &#x21bb; Get latest tutorials</button>
         </div>
         <div className="search-container">
-          <input className="search-bar" type="text" name="value" placeholder="Enter search terms or tags" value={this.state.searchBarValue} onChange={this.onChangeSearchBarValue} />
-          <br/>
+          <input className="search-bar" type="text" name="value" placeholder="Enter search terms or tags" value={this.state.searchBarValue} onChange={this.onChangeSearchBarValue}/>
           <div>
-            <button className="button" onClick={() => {this.handleSearch(this.state.searchBarValue)}}>Search</button>
-            <button className="button" onClick={() => {this.handleAddTag()}}>Add tag</button>
+            <button className="button" disabled={this.state.searchBarValue === "" || this.state.searchApplied} onClick={() => {this.handleSearch(this.state.searchBarValue)}}>Search</button>
+            <button className="button" disabled={this.state.searchBarValue === ""} onClick={() => {this.handleAddTag()}}>Add tag</button>
           </div>
           <div>
             <button className="button" onClick={() => {this.handleClearSearch()}}>Clear search</button>
