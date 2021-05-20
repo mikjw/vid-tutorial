@@ -82,10 +82,11 @@ export default class MainPage extends Component {
   }
 
   applyTags() {
-    let list;
-    if(this.state.searchApplied) { list = searchForTutorials(this.state.initialTutorialsList, this.state.searchString) }
-    else { list = this.state.initialTutorialsList };
-    const topRatedTutorialsForTags = getTopRatedTutorialsForTags(list, this.state.appliedTags, 20);
+    let tutorialsList = this.state.initialTutorialsList;
+    if(this.state.searchApplied) { 
+      tutorialsList = searchForTutorials(tutorialsList, this.state.searchString);
+    }
+    const topRatedTutorialsForTags = getTopRatedTutorialsForTags(tutorialsList, this.state.appliedTags, 20);
     this.setState({ 
       currentTutorialsList: topRatedTutorialsForTags, 
       tagsApplied: true 
@@ -93,18 +94,13 @@ export default class MainPage extends Component {
   }
 
   handleClearAllTags() {
+    let tutorialsWithoutTags = this.state.initialTutorialsList;
     if (this.state.searchApplied) {
-      const list = searchForTutorials(this.state.initialTutorialsList, this.state.searchString);
+      tutorialsWithoutTags = searchForTutorials(tutorialsWithoutTags, this.state.searchString);
       this.setState({
+        tagsApplied: false,
         appliedTags: [],
-        currentTutorialsList: list,
-        tagsApplied: false
-      })
-    } else {
-      this.setState({
-        appliedTags: [],
-        currentTutorialsList: this.state.initialTutorialsList,
-        tagsApplied: false
+        currentTutorialsList: tutorialsWithoutTags
       })
     }
   }
