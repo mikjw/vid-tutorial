@@ -22,38 +22,38 @@ export const getTopRatedTutorialsForTags = (tutorialsArray, tagsArray, numberToR
 * Get tutorials by comparing search terms to title and teacher name, ranking results 
 */
 
-export const searchForTutorials = (tutorialsArray, searchTermString) => {
-  const searchWordsArray = convertSearchString(searchTermString);
-  let tutorialsForSearchTerms = [];
+export const searchForTutorials = (tutorialsArray, searchString) => {
+  const searchTermsArray = convertSearchString(searchString);
+  let tutorialsToReturn = [];
   for (const tutorial of tutorialsArray) {  
     tutorial.searchRankingScore = 0;
     tutorial.alreadyAddedToReturnArray = false;
-    // Check title, add tutorial if matched and increment search score
-    const titleArray = convertSearchString(tutorial.videoTitle)
-    for (const searchTerm of searchWordsArray) {
-      if (titleArray.includes(searchTerm)) {
+    // Check title, add tutorial to return if matched and increment search score
+    const titleWordArray = convertSearchString(tutorial.videoTitle)
+    for (const searchTerm of searchTermsArray) {
+      if (titleWordArray.includes(searchTerm)) {
         tutorial.searchRankingScore += 1
         if (!tutorial.alreadyAddedToReturnArray) {
-          tutorialsForSearchTerms.push(tutorial);
+          tutorialsToReturn.push(tutorial);
           tutorial.alreadyAddedToReturnArray = true;
         }
       }
     }
     // Check teacher name, add tutorial if matched and increment search score
     const teacherNameLowerCase = tutorial.teacherName.toLowerCase()
-    for (const searchTerm of searchWordsArray) {
+    for (const searchTerm of searchTermsArray) {
       if (searchTerm === teacherNameLowerCase) {
         tutorial.searchRankingScore += 1
         if (!tutorial.alreadyAddedToReturnArray) {
-          tutorialsForSearchTerms.push(tutorial);
+          tutorialsToReturn.push(tutorial);
           tutorial.alreadyAddedToReturnArray = true;
         }
       }
     }
   }
 
-  // sort by search ranking score
-  return tutorialsForSearchTerms.sort((a, b) => { return b.searchRankingScore - a.searchRankingScore });
+  // Sort by search ranking score
+  return tutorialsToReturn.sort((a, b) => { return b.searchRankingScore - a.searchRankingScore });
 }
 
 
