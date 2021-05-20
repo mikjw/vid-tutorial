@@ -1,7 +1,9 @@
-import './mainPage.css';
-import { Component } from 'react';
-import axios from 'axios';
-import Tutorial from '../tutorial/tutorial'
+import "./mainPage.css";
+import { Component } from "react";
+import axios from "axios";
+import Tutorial from "../tutorial/tutorial";
+import { getTopRatedTutorialsForTags } from "../../helpers/searchFunctions";
+
 
 export default class MainPage extends Component {
   constructor(props) {
@@ -41,21 +43,27 @@ export default class MainPage extends Component {
     return;
   }
 
-  handleAddTag() {
+  async handleAddTag() {
     const tag = this.state.searchBarValue;
-    this.setState({
+    await this.setState({
       appliedTags: [...this.state.appliedTags, tag],
       searchBarValue: ""
     })
+    this.applyTags();
+  }
+
+  applyTags() {
+    const topRatedTutorialsForTags = getTopRatedTutorialsForTags(this.state.tutorialsList, this.state.appliedTags, 20);
+    this.setState({ tutorialsList: topRatedTutorialsForTags });
   }
 
   onChangeSearchBarValue(e) {
-    this.setState({searchBarValue: e.target.value});
+    this.setState({ searchBarValue: e.target.value });
   }
 
   render() {
     return (
-      <div>
+      <div className="main-page-container">
         <div className="main-page-title">
           VID-TUTORIAL
         </div>
