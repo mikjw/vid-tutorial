@@ -37,6 +37,21 @@ export default class MainPage extends Component {
     })
   }
 
+  async handleRefreshTutorials() {
+    const response = await axios.get("https://lingumi-take-home-test-server.herokuapp.com/videoTutorials");
+    let updatedCurrentTutorialsList = response.data;
+    if (this.state.searchApplied) { 
+      updatedCurrentTutorialsList = searchForTutorials(updatedCurrentTutorialsList, this.state.searchString) 
+    }
+    if (this.state.tagsApplied) { 
+      updatedCurrentTutorialsList = getTopRatedTutorialsForTags(updatedCurrentTutorialsList, this.state.appliedTags, 20)
+    }
+    this.setState({
+      initialTutorialsList: response.data,
+      currentTutorialsList: updatedCurrentTutorialsList,
+    })
+  }
+
   handleSearch() {
     let tutorialsForSearchString = searchForTutorials(this.state.initialTutorialsList, this.state.searchBarValue);
     if (this.state.tagsApplied) {
@@ -116,13 +131,13 @@ export default class MainPage extends Component {
           Vid-Tutorial
         </div>
        <div className="reload">
-        <button className="refresh-button"> &#x21bb; </button>
+        <button className="refresh-button" onClick={() => {this.handleRefreshTutorials()}}> &#x21bb; Get latest tutorials</button>
         </div>
         <div className="search-container">
           <input className="search-bar" type="text" name="value" placeholder="Enter search terms or tags" value={this.state.searchBarValue} onChange={this.onChangeSearchBarValue} />
           <br/>
           <div>
-            <button className= "button" onClick={() => {this.handleSearch(this.state.searchBarValue)}}>Search</button>
+            <button className="button" onClick={() => {this.handleSearch(this.state.searchBarValue)}}>Search</button>
             <button className="button" onClick={() => {this.handleAddTag()}}>Add tag</button>
           </div>
           <div>
