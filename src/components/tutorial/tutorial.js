@@ -14,7 +14,7 @@ export default class Tutorial extends Component {
     return (
       <div className="tut-container">
         <div className="tut-header">
-          {this.props.title}
+          <a className="a" href={this.props.videoUrl}> {this.props.title}</a>
         </div>
         <div>
           <div className="tut-teacher-name">
