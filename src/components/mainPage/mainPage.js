@@ -1,10 +1,9 @@
 import "./mainPage.css";
 import { Component } from "react";
 import axios from "axios";
-import Tutorial from "../tutorial/tutorial";
+import TutorialsList from "../tutorialsList/tutorialsList";
 import { getTopRatedTutorialsForTags } from "../../helpers/searchFunctions";
 import { searchForTutorials } from "../../helpers/searchFunctions";
-
 
 export default class MainPage extends Component {
   constructor(props) {
@@ -27,16 +26,7 @@ export default class MainPage extends Component {
       initialTutorialsList: response.data,
       currentTutorialsList: response.data,
     })
-  }
-
-  listTutorials() {
-    console.log("Listing tutorials: ", this.state.currentTutorialsList);
-    console.log("current tutorials list length: ", this.state.currentTutorialsList.length);
-    return this.state.currentTutorialsList.map(tut => {
-      return <div className="tutorial">
-        <Tutorial key={tut.id} title={tut.videoTitle} teacher={tut.teacherName} tags={tut.tags} avgUserRating={tut.averageUserRating}/>
-      </div>
-    })
+    console.log("currentTutorialsList in main", this.state.currentTutorialsList);
   }
 
   listAppliedTags() {
@@ -113,7 +103,7 @@ export default class MainPage extends Component {
     let searchMessage = "";
     const resultsNumber = this.state.currentTutorialsList.length;
     if (this.state.searchApplied || this.state.tagsApplied) { searchMessage += `Showing top ${resultsNumber} results for` }
-    if (this.state.searchApplied) { searchMessage += ` ${this.state.searchString}`}
+    if (this.state.searchApplied) { searchMessage += ` "${this.state.searchString}"`}
     if (this.state.searchApplied && this.state.tagsApplied) { searchMessage += " with" }
     if (this.state.tagsApplied) { searchMessage += " tags:" }
     return searchMessage;
@@ -125,17 +115,16 @@ export default class MainPage extends Component {
         <div className="main-page-title">
           VID-TUTORIAL
         </div>
-        <div className='search-container'>
-          <input className='search-input' type='text' name='value' value={this.state.searchBarValue} onChange={this.onChangeSearchBarValue} />
+        <div className="search-container">
+          <input className="search-input" type="text" name="value" placeholder="Enter search terms or tags" value={this.state.searchBarValue} onChange={this.onChangeSearchBarValue} />
           <br/>
-
           <div>
-            <button className= {'button'} onClick={() => {this.handleSearch(this.state.searchBarValue)}}>Search</button>
-            <button className='button' onClick={() => {this.handleAddTag()}}>Add tag</button>
+            <button className= "button" onClick={() => {this.handleSearch(this.state.searchBarValue)}}>Search</button>
+            <button className="button" onClick={() => {this.handleAddTag()}}>Add tag</button>
           </div>
           <div>
-            <button className='button' onClick={() => {this.handleClearSearch()}}>Clear search</button>
-            <button className='button' onClick={() => {this.handleClearAllTags()}}>Clear all tags</button>
+            <button className="button" onClick={() => {this.handleClearSearch()}}>Clear search</button>
+            <button className="button" onClick={() => {this.handleClearAllTags()}}>Clear all tags</button>
           </div>
         </div>
         <div>
@@ -145,7 +134,7 @@ export default class MainPage extends Component {
           {this.listAppliedTags()}
         </div>
         <div className="currentTutorialsList">
-          {this.listTutorials()}
+          <TutorialsList tutorials={this.state.currentTutorialsList}/>
         </div>
       </div>
     );
