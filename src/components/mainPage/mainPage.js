@@ -9,9 +9,12 @@ export default class MainPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tutorialsList: [],
+      initialTutorialsList: [],
+      currentTutorialsList: [],
       searchBarValue: "",
-      appliedTags: []
+      appliedTags: [],
+      searchString: "",
+      tagsApplied: false
     }
     this.onChangeSearchBarValue = this.onChangeSearchBarValue.bind(this);
   }
@@ -19,12 +22,15 @@ export default class MainPage extends Component {
   async componentDidMount() {
     const response = await axios.get("https://lingumi-take-home-test-server.herokuapp.com/videoTutorials");
     this.setState({
-      tutorialsList: response.data,
+      initialTutorialsList: response.data,
+      currentTutorialsList: response.data,
     })
   }
 
   listTutorials() {
-    return this.state.tutorialsList.map(tut => {
+    console.log("Listing tutorials: ", this.state.currentTutorialsList);
+    console.log("current tutorials list length: ", this.state.currentTutorialsList.length);
+    return this.state.currentTutorialsList.map(tut => {
       return <div className="tutorial">
         <Tutorial key={tut.id} title={tut.videoTitle} teacher={tut.teacherName} tags={tut.tags} avgUserRating={tut.averageUserRating}/>
       </div>
@@ -43,6 +49,10 @@ export default class MainPage extends Component {
     return;
   }
 
+  handleClearSearch() {
+    return;
+  }
+
   async handleAddTag() {
     const tag = this.state.searchBarValue;
     await this.setState({
@@ -53,8 +63,21 @@ export default class MainPage extends Component {
   }
 
   applyTags() {
-    const topRatedTutorialsForTags = getTopRatedTutorialsForTags(this.state.tutorialsList, this.state.appliedTags, 20);
-    this.setState({ tutorialsList: topRatedTutorialsForTags });
+    const topRatedTutorialsForTags = getTopRatedTutorialsForTags(this.state.initialTutorialsList, this.state.appliedTags, 20);
+    this.setState({ 
+      currentTutorialsList: topRatedTutorialsForTags, 
+      tagsApplied: true 
+    });
+  }
+
+  handleClearAllTags() {
+    if (this.state.tagsApplied) {
+      this.setState({
+        appliedTags: [],
+        currentTutorialsList: this.state.initialTutorialsList,
+        tagsApplied: false
+      })
+    }
   }
 
   onChangeSearchBarValue(e) {
@@ -77,8 +100,12 @@ export default class MainPage extends Component {
             <button className='search-button' onClick={() => {this.handleSearch(this.state.searchBarValue)}}>Search</button>
             <button className='add-tag-button' onClick={() => {this.handleAddTag()}}>Add tag</button>
           </div>
+          <div>
+            <button className='clear-search-button' onClick={() => {this.handleClearSearch()}}>Clear search</button>
+            <button className='clear-tags-button' onClick={() => {this.handleClearAllTags()}}>Clear all tags</button>
+          </div>
         </div>
-        <div className="tutorialsList">
+        <div className="currentTutorialsList">
           {this.listTutorials()}
         </div>
       </div>
