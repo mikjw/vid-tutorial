@@ -8,7 +8,7 @@ describe("Search Helper Functions", () => {
       const result = getTopRatedTutorialsForTags(data, ["Interactive"], 20);
       expect(Array.isArray(result)).toBeTruthy();
       expect(result.length).toEqual(1);
-      expect(result[0].id).toEqual("95b389a7-ab9e-4209-a5e4-ada56886410e");
+      expect(result[0].tags.includes("Interactive")).toBeTruthy();
     })
 
     test("it returns an array with three matches when passed Moving", () => {
@@ -27,18 +27,18 @@ describe("Search Helper Functions", () => {
       expect(result.length).toEqual(4);
     })
 
-    test("it ranks tags by their average user rating", () => {
-      const result = getTopRatedTutorialsForTags(data, ["Hard", "Exciting"], 20)
-      expect(result[0].averageUserRating > result[1].averageUserRating >
-            result[2].averageUserRating > result[3].averageUserRating).toBeTruthy();
-    })
-
     test("it limits results to the passed numberToReturn", () => {
       const result = getTopRatedTutorialsForTags(data, ["Interactive", "Moving"], 2)
       expect(result.length).toEqual(2);
     })
 
-    test("it returns all tutorials when numberToReturn is greater than total matched", () => {
+    test("it ranks tags by their average user rating", () => { 
+      const result = getTopRatedTutorialsForTags(data, ["Hard", "Exciting"], 20)
+      expect(result[0].averageUserRating > result[1].averageUserRating &&
+             result[1].averageUserRating > result[2].averageUserRating).toBeTruthy();
+    })
+
+    test("it returns all matches when numberToReturn is greater than total matched", () => {
       const tagsArray = ["Exciting", "Hard", "Passive", "Engaging", "Energetic"];
       const result = getTopRatedTutorialsForTags(data, tagsArray, 20);
       expect(result.length).toEqual(10);
@@ -58,13 +58,12 @@ describe("Search Helper Functions", () => {
       const result = searchForTutorials(data, "Food");
       expect(Array.isArray(result)).toBeTruthy();
       expect(result.length).toEqual(1);
-      expect(result[0].id).toEqual("95b389a7-ab9e-4209-a5e4-ada56886410e");
+      expect(result[0].videoTitle).toEqual("Practice: Food"); 
     })
 
     test("it returns an array with 3 matches when passed the string 'Practice'", () => {
       const result = searchForTutorials(data, "Practice");
-      expect(result.length).toEqual(3);
-      expect(result[2].id).toEqual("95b389a7-ab9e-4209-a5e4-ada56886410e");
+      expect(result[2].videoTitle).toEqual("Practice: Food");
     })
 
     test("it splits the search string to find matches for each word", () => {
@@ -76,7 +75,7 @@ describe("Search Helper Functions", () => {
 
     test("it finds matches regardless of casing", () => {
       const result = searchForTutorials(data, "pracTICe");
-      expect(result[2].videoTitle).toEqual("Practice: Food");
+      expect(result[0].videoTitle).toEqual("Practice: Places");
     })
 
     test("it finds matches regardless of punctuation", () => {
@@ -85,23 +84,14 @@ describe("Search Helper Functions", () => {
     })
 
     test("it finds matches in the teacher name field as well as the title", () => {
-      const result = searchForTutorials(data, "Katy")
-      expect(result.length).toEqual(2);
+      const result = searchForTutorials(data, "Katy");
       expect(result[0].teacherName).toEqual("Katy");
-      expect(result[1].teacherName).toEqual("Katy")
     });
 
     test("it returns matches for both teacher name and title", () => {
       const result = searchForTutorials(data, "Katy practice")
       expect(result[0].teacherName).toEqual("Katy");
       expect(result[1].videoTitle).toEqual("Practice: Places");
-    })
-
-    test("it assigns a search ranking score of 3 for 3 matches", () => {
-      const result = searchForTutorials(data, "places katy practice");
-      expect(result[0].videoTitle).toEqual("Practice: Places");
-      expect(result[0].teacherName).toEqual("Katy");
-      expect(result[0].searchRankingScore).toEqual(3);
     })
 
     test("it assigns a search ranking score of 1 for 1 match", () => {
@@ -111,7 +101,14 @@ describe("Search Helper Functions", () => {
       expect(result[3].searchRankingScore).toEqual(1);
     })
 
-    test("it sorts the return array based on number of matches", () => {
+    test("it assigns a search ranking score of 3 for 3 matches", () => {
+      const result = searchForTutorials(data, "places katy practice");
+      expect(result[0].videoTitle).toEqual("Practice: Places");
+      expect(result[0].teacherName).toEqual("Katy");
+      expect(result[0].searchRankingScore).toEqual(3);
+    })
+
+    test("it sorts the return array based on the search score", () => {
       const result = searchForTutorials(data, "places katy practice");
       expect(result[0].searchRankingScore > result[1].searchRankingScore && 
         result[1].searchRankingScore > result[2].searchRankingScore).toBeTruthy();
