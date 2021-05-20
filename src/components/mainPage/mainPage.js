@@ -87,12 +87,12 @@ export default class MainPage extends Component {
     let tutorialsWithoutTags = this.state.initialTutorialsList;
     if (this.state.searchApplied) {
       tutorialsWithoutTags = searchForTutorials(tutorialsWithoutTags, this.state.searchString);
-      this.setState({
-        tagsApplied: false,
-        appliedTags: [],
-        currentTutorialsList: tutorialsWithoutTags
-      })
     }
+    this.setState({
+      tagsApplied: false,
+      appliedTags: [],
+      currentTutorialsList: tutorialsWithoutTags
+    })
   }
 
   onChangeSearchBarValue(e) {
@@ -113,10 +113,13 @@ export default class MainPage extends Component {
     return (
       <div className="main-page-container">
         <div className="main-page-title">
-          VID-TUTORIAL
+          Vid-Tutorial
+        </div>
+       <div className="reload">
+        <button className="refresh-button"> &#x21bb; </button>
         </div>
         <div className="search-container">
-          <input className="search-input" type="text" name="value" placeholder="Enter search terms or tags" value={this.state.searchBarValue} onChange={this.onChangeSearchBarValue} />
+          <input className="search-bar" type="text" name="value" placeholder="Enter search terms or tags" value={this.state.searchBarValue} onChange={this.onChangeSearchBarValue} />
           <br/>
           <div>
             <button className= "button" onClick={() => {this.handleSearch(this.state.searchBarValue)}}>Search</button>
@@ -133,7 +136,7 @@ export default class MainPage extends Component {
         <div>
           {this.listAppliedTags()}
         </div>
-        <div className="currentTutorialsList">
+        <div className="tutorials-list-container ">
           <TutorialsList tutorials={this.state.currentTutorialsList}/>
         </div>
       </div>
