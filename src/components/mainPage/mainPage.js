@@ -4,6 +4,7 @@ import axios from "axios";
 import TutorialsList from "../tutorialsList/tutorialsList";
 import { getTopRatedTutorialsForTags } from "../../helpers/searchFunctions";
 import { searchForTutorials } from "../../helpers/searchFunctions";
+import { createSearchMessage } from "../../helpers/messageGenerator";
 
 export default class MainPage extends Component {
   constructor(props) {
@@ -141,16 +142,6 @@ export default class MainPage extends Component {
     this.setState({ searchBarValue: e.target.value });
   }
 
-  createSearchMesage() {
-    let searchMessage = "";
-    const resultsNumber = this.state.currentTutorialsList.length;
-    if (this.state.searchApplied || this.state.tagsApplied) { searchMessage += `Showing top ${resultsNumber} results for` }
-    if (this.state.searchApplied) { searchMessage += ` "${this.state.searchString}"`}
-    if (this.state.searchApplied && this.state.tagsApplied) { searchMessage += " with" }
-    if (this.state.tagsApplied) { searchMessage += " tags:" }
-    return searchMessage;
-  }
-
   listAppliedTags() {
     return this.state.appliedTags.map(tag => {
       return <div className="tag">
@@ -166,21 +157,21 @@ export default class MainPage extends Component {
           Vid-Tutorial
         </div>
        <div className="reload">
-        <button className="refresh-button" onClick={() => {this.handleRefreshTutorials()}}> &#x21bb; Get latest tutorials</button>
+        <button className="refresh-button" onClick={() => {this.handleRefreshTutorials()}}> &#x21bb; Refresh tutorials</button>
         </div>
         <div className="search-container">
           <input className="search-bar" type="text" name="value" placeholder="Enter search terms or tags" value={this.state.searchBarValue} onChange={this.onChangeSearchBarValue}/>
           <div>
-            <button className="button" disabled={this.state.searchBarValue === "" || this.state.searchApplied} onClick={() => {this.handleSearch(this.state.searchBarValue)}}>Search</button>
-            <button className="button" disabled={this.state.searchBarValue === ""} onClick={() => {this.handleAddTag()}}>Add tag</button>
+            <button className="action-button" disabled={this.state.searchBarValue === "" || this.state.searchApplied} onClick={() => {this.handleSearch(this.state.searchBarValue)}}>Search</button>
+            <button className="action-button" disabled={this.state.searchBarValue === ""} onClick={() => {this.handleAddTag()}}>Add tag</button>
           </div>
           <div>
-            <button className="button" onClick={() => {this.handleClearSearch()}}>Clear search</button>
-            <button className="button" onClick={() => {this.handleClearAllTags()}}>Clear all tags</button>
+            <button className="clear-button" disabled={!this.state.searchApplied} onClick={() => {this.handleClearSearch()}}>Clear search</button>
+            <button className="clear-button" disabled={!this.state.tagsApplied} onClick={() => {this.handleClearAllTags()}}>Clear all tags</button>
           </div>
         </div>
-        <div>
-          {this.createSearchMesage()}
+        <div className="search-message">
+          {createSearchMessage(this.state.searchApplied, this.state.tagsApplied, this.state.currentTutorialsList.length, this.state.searchString)}
         </div>
         <div>
           {this.listAppliedTags()}
