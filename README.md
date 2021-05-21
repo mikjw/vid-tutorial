@@ -5,6 +5,7 @@
 ## How to run
 
 - Clone this repository and navigate to the root folder
+- Ensure you have the latest version of Node.js installed
 - Install dependencies: 
     ```
     npm install
@@ -26,6 +27,7 @@
   npm test --collect-coverage
   ```
 <br>
+
 ### Techstack  
 
 | Name      | Purpose
