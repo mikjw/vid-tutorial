@@ -33,14 +33,6 @@ export default class MainPage extends Component {
     })
   }
 
-  listAppliedTags() {
-    return this.state.appliedTags.map(tag => {
-      return <div className="tag">
-        {tag}
-      </div>
-    })
-  }
-
 
   /**
   * Refresh tutorials list and re-apply any current search terms and tags
@@ -157,6 +149,14 @@ export default class MainPage extends Component {
     if (this.state.searchApplied && this.state.tagsApplied) { searchMessage += " with" }
     if (this.state.tagsApplied) { searchMessage += " tags:" }
     return searchMessage;
+  }
+
+  listAppliedTags() {
+    return this.state.appliedTags.map(tag => {
+      return <div className="tag">
+        {tag}
+      </div>
+    })
   }
 
   render() {
