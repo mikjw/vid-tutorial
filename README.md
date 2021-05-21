@@ -1,9 +1,8 @@
 # Vid-Tutorial
 
-<img src="https://github.com/mikjw/vid-tutorial/blob/main/docs/screenshot-tags-search.png" width=60% alt="screenshot">
+<img src="https://github.com/mikjw/vid-tutorial/blob/main/docs/screenshot-tags-search.png" width=90% alt="screenshot">
 
 ## How to run
--------------------
 
 - Clone this repository and navigate to the root folder
 - Install dependencies: 
@@ -26,10 +25,8 @@
   ```
   npm test --collect-coverage
   ```
-<br><br>
-
+<br>
 ### Techstack  
--------------------
 
 | Name      | Purpose
 | :----------------: |:-----------------------------:| 
@@ -38,12 +35,11 @@
 | Jest      | Testing  | 
 | Axios  | HTTP requests   | 
 
-<br><br>
+<br>
 
-### My Approach
--------------------
 
-### Assumptions
+
+### My approach - assumptions
 
   - The ACs raised a few questions, particularly around how the two search functions should interact (if at all). In the real world I'd discuss these with the team, but here I made a few assumptions, resolving ambiguity wherever possible by considering what would be the most natural / intuitive UX:
   
@@ -61,7 +57,7 @@
 <br>
 
 ### Other Considerations
-- Working with a relatively large array in memory I weighed up creating versions of this to store search / tag results as state vs simply executing the functions more frequently; I decided to execute functions more frequently as performance was quick
+- Working with a relatively large array in memory I weighed up creating versions of this to store search / tag results as state vs simply executing the functions more frequently; I decided to execute functions more frequently as performance seemed quick
 - Working with React it was tempting to break components down further - the mainPage component probably does too many things - but I also wanted to be pragmatic and extract components primarily if they would be re-used
 
 <br>
