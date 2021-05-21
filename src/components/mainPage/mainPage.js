@@ -2,6 +2,7 @@ import "./mainPage.css";
 import { Component } from "react";
 import axios from "axios";
 import TutorialsList from "../tutorialsList/tutorialsList";
+import TagsList from "../tagsList/tagsList";
 import { getTopRatedTutorialsForTags } from "../../helpers/searchFunctions";
 import { searchForTutorials } from "../../helpers/searchFunctions";
 import { createSearchMessage } from "../../helpers/messageGenerator";
@@ -175,6 +176,7 @@ export default class MainPage extends Component {
         </div>
         <div>
           {this.listAppliedTags()}
+          <TagsList tags={this.state.appliedTags}/>
         </div>
         <div className="tutorials-list-container ">
           <TutorialsList tutorials={this.state.currentTutorialsList}/>

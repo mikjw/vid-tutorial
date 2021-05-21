@@ -1,15 +1,8 @@
 import './tutorial.css';
 import { Component } from 'react';
+import TagsList from "../tagsList/tagsList";
 
 export default class Tutorial extends Component {
-  listTags() {
-    return this.props.tags.map(tag => {
-      return <div className="tag">
-        {tag}
-      </div>
-    })
-  }
-
   render() {
     return (
       <div className="tut-container">
@@ -25,7 +18,8 @@ export default class Tutorial extends Component {
           </div>
         </div>
         <div className="tut-tags-container">
-          Tags: {this.listTags()}
+          <div className="tags">Tags:</div>
+          <div className="tags"><TagsList tags={this.props.tags}/></div>
         </div>
       </div>
     );
