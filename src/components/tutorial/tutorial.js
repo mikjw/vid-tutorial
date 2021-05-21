@@ -21,7 +21,7 @@ export default class Tutorial extends Component {
             Teacher: {this.props.teacher}
           </div>
           <div className="tut-rating">
-            Rating: {this.props.avgUserRating.toPrecision(2)}
+            Rating: {(Number(this.props.avgUserRating) * 10 ).toPrecision(2).slice(0,4)}
           </div>
         </div>
         <div className="tut-tags-container">
