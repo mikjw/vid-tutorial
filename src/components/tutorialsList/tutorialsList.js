@@ -7,7 +7,7 @@ export default class TutorialsList extends Component {
     console.log("this.props.tutorials in list", this.props.tutorials)
     return this.props.tutorials.map(tut => {
       return <div className="tutorial-list-element">
-        <Tutorial key={tut.id} title={tut.videoTitle} teacher={tut.teacherName} tags={tut.tags} avgUserRating={tut.averageUserRating}/>
+        <Tutorial key={tut.id} title={tut.videoTitle} teacher={tut.teacherName} tags={tut.tags} avgUserRating={tut.averageUserRating} videoUrl={tut.videoUrl}/>
       </div>
     })
   }
