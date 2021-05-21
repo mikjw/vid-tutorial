@@ -39,7 +39,7 @@ export const searchForTutorials = (tutorialsArray, searchString) => {
         }
       }
     }
-    // Check teacher name, add tutorial if matched and increment search score
+    // Check teacher name, add tutorial to return if matched and increment search score
     const teacherNameLowerCase = tutorial.teacherName.toLowerCase()
     for (const searchTerm of searchTermsArray) {
       if (searchTerm === teacherNameLowerCase) {

@@ -175,7 +175,6 @@ export default class MainPage extends Component {
           {createSearchMessage(this.state.searchApplied, this.state.tagsApplied, this.state.currentTutorialsList.length, this.state.searchString)}
         </div>
         <div>
-          {this.listAppliedTags()}
           <TagsList tags={this.state.appliedTags}/>
         </div>
         <div className="tutorials-list-container ">
