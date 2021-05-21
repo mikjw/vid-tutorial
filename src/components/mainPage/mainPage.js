@@ -20,13 +20,17 @@ export default class MainPage extends Component {
     this.onChangeSearchBarValue = this.onChangeSearchBarValue.bind(this);
   }
 
+
+  /**
+  * Fetch tutorials on load
+  */
+
   async componentDidMount() {
     const response = await axios.get("https://lingumi-take-home-test-server.herokuapp.com/videoTutorials");
     this.setState({
       initialTutorialsList: response.data,
       currentTutorialsList: response.data,
     })
-    console.log("currentTutorialsList in main", this.state.currentTutorialsList);
   }
 
   listAppliedTags() {
@@ -36,6 +40,11 @@ export default class MainPage extends Component {
       </div>
     })
   }
+
+
+  /**
+  * Refresh tutorials list and re-apply any current search terms and tags
+  */
 
   async handleRefreshTutorials() {
     const response = await axios.get("https://lingumi-take-home-test-server.herokuapp.com/videoTutorials");
@@ -52,6 +61,11 @@ export default class MainPage extends Component {
     })
   }
 
+
+  /**
+  * Pass tutorials to search helper function and re-apply any currently applied tags to result 
+  */
+
   handleSearch() {
     let tutorialsForSearchString = searchForTutorials(this.state.initialTutorialsList, this.state.searchBarValue);
     if (this.state.tagsApplied) {
@@ -65,10 +79,15 @@ export default class MainPage extends Component {
     })
   }
 
+
+  /**
+  * Remove search terms and re-apply any currently applied tags
+  */
+
   handleClearSearch() {
     let tutorialsWithoutSearch = this.state.initialTutorialsList;
     if(this.state.tagsApplied) {
-      tutorialsWithoutSearch = getTopRatedTutorialsForTags(this.state.initialTutorialsList, this.state.appliedTags, 20);
+      tutorialsWithoutSearch = getTopRatedTutorialsForTags(tutorialsWithoutSearch, this.state.appliedTags, 20);
     }
     this.setState({ 
       searchApplied: false, 
@@ -76,6 +95,11 @@ export default class MainPage extends Component {
       currentTutorialsList: tutorialsWithoutSearch
     }) 
   }
+
+
+  /**
+  * Add a new tag to the array
+  */
 
   async handleAddTag() {
     const tag = this.state.searchBarValue;
@@ -85,6 +109,12 @@ export default class MainPage extends Component {
     })
     this.applyTags();
   }
+
+
+  /**
+  * When a new tag is added, get the initial list before applying the updated range of tags,
+  * re-applying any current search terms.
+  */
 
   applyTags() {
     let tutorialsList = this.state.initialTutorialsList;
@@ -97,6 +127,11 @@ export default class MainPage extends Component {
       tagsApplied: true 
     });
   }
+
+
+  /**
+  * Re-apply any current search terms when removing all tags
+  */
 
   handleClearAllTags() {
     let tutorialsWithoutTags = this.state.initialTutorialsList;
