@@ -143,14 +143,6 @@ export default class MainPage extends Component {
     this.setState({ searchBarValue: e.target.value });
   }
 
-  listAppliedTags() {
-    return this.state.appliedTags.map(tag => {
-      return <div className="tag">
-        {tag}
-      </div>
-    })
-  }
-
   render() {
     return (
       <div className="main-page-container">
