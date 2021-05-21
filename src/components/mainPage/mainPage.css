@@ -2,6 +2,7 @@
   --midgreen: rgb(48, 172, 95);
   --darkgreen: rgb(43, 138, 79);
   --lightblue: #1fc8e6;
+  --midblue: rgb(52, 133, 255);
 }
 
 .main-page-container {
@@ -16,29 +17,56 @@
   margin-top: 20%;
   font-size: 45px;
   font-weight: bold;
-  color: var(--darkgreen);
+  color: black;
 }
 
-.button {
-    border-style: solid;
-    border-width: 2px;
-    border-radius: 5px;
-    background-color: rgb(52, 133, 255);
-    margin: 2px;
-    padding: 5px 10px 5px 10px;
-    font-size: 15px;
-    border-color: transparent;
-    color: rgb(255, 255, 255);
-  }
+.action-button {
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 4px;
+  min-width: 115px;
+  background-color: var(--midblue);
+  background-color: var();
+  margin-left: 3px;
+  margin-right: 3px;
+  margin-bottom: 7px;
+  padding: 5px 10px 5px 10px;
+  font-size: 16px;
+  border-color: transparent;
+  color: rgb(255, 255, 255);
+}
+
+.action-button:hover {
+  background-color: rgb(78, 149, 255);
+}
+
+.clear-button {
+  border-style: solid;
+  border-width: 2px;
+  border-radius:8px;
+  background-color: rgb(179, 178, 178);
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 5px 10px 5px 10px;
+  font-size: 11px;
+  font-weight: bold;
+  border-color: transparent;
+  color: rgb(255, 255, 255);
+}
+
+.clear-button:hover {
+  background-color: rgb(185, 185, 185);
+}
 
 .refresh-button {
   border-width: 1px;
   border-radius: 5px;
   background-color: transparent;
   margin: 2px;
-  font-size: 22px !important;
+  margin-top: 20px;
+  font-size: 24px !important;
   border-color: transparent;
-  color: rgb(143, 143, 143);
+  color: rgb(158, 158, 158);
 }
 
 .refresh-button {
@@ -47,7 +75,7 @@
   
 .refresh-button:hover {
   border-color: transparent;
-  color: rgb(56, 56, 56)
+  color: rgb(77, 77, 77)
 }
 
 .search-container {
@@ -55,13 +83,19 @@
 }
 
 .search-bar {
+  border-radius: 30px;
   width: 400px;
   height: 23px;
   margin-bottom: 25px;
-  border-radius: 30px;
   padding: 10px;
   padding-left: 18px;
   font-size: 18px;
+}
+
+.search-message {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  font-size: 16px;
 }
 
 .tutorials-list-container {
